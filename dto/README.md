@@ -1,0 +1,2 @@
+DTO é a sigla para Data Transfer Object, que é um padrão de projeto de software para transferir dados entre diferentes camadas de uma aplicação. 
+Os DTOs são classes simples que contêm apenas os dados necessários para a transferência, sem lógica de negócios. Eles são usados para melhorar a comunicação entre as camadas da aplicação e reduzir o acoplamento entre as partes do sistema.
