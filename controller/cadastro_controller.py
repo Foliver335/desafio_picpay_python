@@ -8,7 +8,15 @@ cadastro_service = CadastroServiceImplementation()  # Instancia o serviço de ca
 @app.route('/', methods=['GET'])
 def home():
     # Define uma rota para a raiz do servidor.
-    return jsonify({"message": "Bem-vindo à API de Cadastros"}), 200
+    return jsonify({"message": """Bem-vindo à API de Cadastros
+                    utilise as rotas de acesso selecionando os protocolos REST para a tarefa desejada:
+                   
+                    /cadastros/ para obter dados de usuarios
+                    /cadastros/ para inserir dados
+                    /cadastros/<nickname> para modificar dados
+                    /cadastros/<nickname> para deletar dados 
+                    
+                    """}), 200
 
 @app.route('/cadastros', methods=['GET'])
 def list_cadastros():
@@ -47,8 +55,8 @@ def create_cadastro():
     cadastro_service.create_cadastro(cadastro_dto)
     return jsonify({"message": "Cadastro created successfully"}), 201
 
-@app.route('/cadastros/<email>', methods=['PUT'])
-def update_cadastro(email):
+@app.route('/cadastros/<nickname>', methods=['PUT'])
+def update_cadastro(nickname):
     # Atualiza um cadastro existente.
     data = request.json
     cadastro_dto = CadastroDTO(
@@ -59,15 +67,15 @@ def update_cadastro(email):
         birth_date=data['birth_date'],
         addresses=data['addresses']
     )
-    success = cadastro_service.update_cadastro(email, cadastro_dto)
+    success = cadastro_service.update_cadastro(nickname, cadastro_dto)
     if success:
         return jsonify({"message": "Cadastro updated successfully"}), 200
     return jsonify({"message": "Cadastro not found"}), 404
 
-@app.route('/cadastros/<email>', methods=['DELETE'])
-def delete_cadastro(email):
+@app.route('/cadastros/<nickname>', methods=['DELETE'])
+def delete_cadastro(nickname):
     # Exclui um cadastro existente.
-    success = cadastro_service.delete_cadastro(email)
+    success = cadastro_service.delete_cadastro(nickname)
     if success:
         return jsonify({"message": "Cadastro deleted successfully"}), 200
     return jsonify({"message": "Cadastro not found"}), 404
