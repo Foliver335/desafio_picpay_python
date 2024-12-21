@@ -37,6 +37,7 @@ def create_cadastro():
     # Cria um novo cadastro.
     data = request.json
     cadastro_dto = CadastroDTO(
+        nickname=data['nickname'],
         name=data['name'],
         email=data['email'],
         phone=data['phone'],
@@ -51,6 +52,7 @@ def update_cadastro(email):
     # Atualiza um cadastro existente.
     data = request.json
     cadastro_dto = CadastroDTO(
+        nickname=data['nickname'],
         name=data['name'],
         email=data['email'],
         phone=data['phone'],
