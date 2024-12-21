@@ -9,6 +9,7 @@ class CadastroServiceImplementation:
     def create_cadastro(self, cadastro_dto):
         # Cria um novo cadastro a partir do DTO e salva no repositório.
         cadastro = Cadastro(
+            nickname=cadastro_dto.nickname,
             name=cadastro_dto.name,
             email=cadastro_dto.email,
             phone=cadastro_dto.phone,
@@ -24,6 +25,7 @@ class CadastroServiceImplementation:
     def update_cadastro(self, email, cadastro_dto):
         # Atualiza os dados de um cadastro existente com base no email.
         updated_cadastro = Cadastro(
+            nickname=cadastro_dto.nickname,
             name=cadastro_dto.name,
             email=cadastro_dto.email,
             phone=cadastro_dto.phone,
