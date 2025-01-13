@@ -1,40 +1,65 @@
-from repository.cadastro_repository import CadastroRepository
-from entity.cadastro_entity import Cadastro
 
+from entity.cadastro_entity import Cadastro
+from datetime import datetime
+from repository.cadastro_repository import CadastroRepository
 class CadastroServiceImplementation:
-    # Implementa os métodos definidos na interface CadastroService.
-    def __init__(self):
-        self.repository = CadastroRepository()  # Instancia o repositório.
+    def __init__(self, session):
+        self.session = session
 
     def create_cadastro(self, cadastro_dto):
-        # Cria um novo cadastro a partir do DTO e salva no repositório.
-        cadastro = Cadastro(
+        try:
+            birth_date_parsed = datetime.strptime(cadastro_dto.birth_date, '%Y-%m-%d').date()
+        except ValueError:
+            raise ValueError("Data de nascimento inválida. Use o formato YYYY-MM-DD.")
+
+        new_cadastro = Cadastro(
             nickname=cadastro_dto.nickname,
             name=cadastro_dto.name,
             email=cadastro_dto.email,
             phone=cadastro_dto.phone,
-            birth_date=cadastro_dto.birth_date,
-            addresses=cadastro_dto.addresses
+            birth_date=birth_date_parsed,
+            street=cadastro_dto.street,
+            number=cadastro_dto.number,
+            zip_code=cadastro_dto.zip_code
         )
-        self.repository.save(cadastro)
+        
+        call_repository = CadastroRepository.save(new_cadastro)
+
 
     def get_all_cadastros(self):
-        # Retorna todos os cadastros armazenados no repositório.
-        return self.repository.find_all()
+        return self.session.query(Cadastro).all()
 
-    def update_cadastro(self, email, cadastro_dto):
-        # Atualiza os dados de um cadastro existente com base no email.
-        updated_cadastro = Cadastro(
-            nickname=cadastro_dto.nickname,
-            name=cadastro_dto.name,
-            email=cadastro_dto.email,
-            phone=cadastro_dto.phone,
-            birth_date=cadastro_dto.birth_date,
-            addresses=cadastro_dto.addresses
-        )
-        return self.repository.update(email, updated_cadastro)
+    def update_cadastro(self, nickname, cadastro_dto):
+        cadastro = self.session.query(Cadastro).filter_by(nickname=nickname).first()
+        if not cadastro:
+            raise ValueError("Cadastro não encontrado.")
 
-    def delete_cadastro(self, email):
-        # Remove um cadastro do repositório com base no email.
-        # ( a escolha do e-mail foi pelo fato de que varias pessoas podem ter nomes iguais)
-        return self.repository.delete(email)
+        if cadastro_dto.name:
+            cadastro.name = cadastro_dto.name
+        if cadastro_dto.email:
+            cadastro.email = cadastro_dto.email
+        if cadastro_dto.phone:
+            cadastro.phone = cadastro_dto.phone
+        if cadastro_dto.birth_date:
+            try:
+                cadastro.birth_date = datetime.strptime(cadastro_dto.birth_date, '%Y-%m-%d').date()
+            except ValueError:
+                raise ValueError("Data de nascimento inválida.")
+        if cadastro_dto.street:
+            cadastro.street = cadastro_dto.street
+        if cadastro_dto.number:
+            cadastro.number = cadastro_dto.number
+        if cadastro_dto.zip_code:
+            cadastro.zip_code = cadastro_dto.zip_code 
+
+        self.session.commit()
+
+    def delete_cadastro(self, nickname):
+        cadastro = self.session.query(Cadastro).filter_by(nickname=nickname).first()
+        if not cadastro:
+            raise ValueError("Cadastro não encontrado.")
+
+        self.session.delete(cadastro)
+        self.session.commit()
+        
+        

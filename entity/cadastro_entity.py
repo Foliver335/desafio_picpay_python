@@ -1,10 +1,27 @@
-class Cadastro:
-    # Define a classe Cadastro, que representa a entidade principal do sistema.
-    def __init__(self,nickname: str, name: str, email: str, phone: str, birth_date: str, addresses: list):
-        # Inicializa os atributos da entidade com os dados do cadastro.
-        self.nickname = nickname # Apelido do usuário cadastrado.
-        self.name = name  # Nome do usuário cadastrado.
-        self.email = email  # Email do usuário cadastrado.
-        self.phone = phone  # Telefone do usuário cadastrado.
-        self.birth_date = birth_date  # Data de nascimento do usuário cadastrado.
-        self.addresses = addresses  # Lista de endereços associados ao cadastro.
+from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class Cadastro(Base):
+    __tablename__ = 'cadastros'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nickname = Column(String, unique=True, nullable=False)  # Identificador único
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    phone = Column(String, nullable=False)
+    birth_date = Column(Date, nullable=False)
+    street = Column(String, nullable=False)
+    number = Column(String, nullable=False)
+    zip_code = Column(String, nullable=False)
+
+    def __init__(self, nickname, name, email, phone, birth_date, street, number, zip_code):
+        self.nickname = nickname
+        self.name = name
+        self.email = email
+        self.phone = phone
+        self.birth_date = birth_date
+        self.street = street
+        self.number = number
+        self.zip_code = zip_code
