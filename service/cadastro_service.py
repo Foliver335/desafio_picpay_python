@@ -1,12 +1,18 @@
-class CadastroService:
-    # Define a interface para operações de serviço relacionadas a cadastros.
+from abc import ABC, abstractmethod
+
+class CadastroServiceInterface(ABC):
+    @abstractmethod
     def create_cadastro(self, cadastro_dto):
-        pass  # verificar com o Gerente
+        pass
+
+    @abstractmethod
     def get_all_cadastros(self):
-        pass  # verificar com o Gerente
+        pass
 
-    def update_cadastro(self, email, cadastro_dto):
-        pass  # verificar com o Gerente
+    @abstractmethod
+    def update_cadastro(self, nickname, cadastro_dto):
+        pass
 
-    def delete_cadastro(self, email):
-        pass  # verificar com o Gerente
+    @abstractmethod
+    def delete_cadastro(self, nickname):
+        pass
