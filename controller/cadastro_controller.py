@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, request
 from dto.cadastro_dto import CadastroDTO
-from service.cadastro_service import CadastroServiceInterface
-from repository.database_config import session
+from service.cadastro_service import CadastroService
+from config.database_config import session
 
 app = Flask(__name__)
-cadastro_service = CadastroServiceInterface(session)
+cadastro_service = CadastroService(session)
 
 @app.route('/cadastros', methods=['GET'])
 def list_cadastros():
