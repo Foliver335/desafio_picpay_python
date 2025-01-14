@@ -8,11 +8,13 @@ cadastro_service = CadastroService(session)
 
 @app.route('/cadastros', methods=['GET'])
 def list_cadastros():
+   
     cadastros = cadastro_service.get_all_cadastros()
-    return jsonify([cadastro.__dict__ for cadastro in cadastros]), 200
+    return jsonify([cadastro.to_dict() for cadastro in cadastros]), 200  # Usa o método `to_dict`
 
 @app.route('/cadastros', methods=['POST'])
 def create_cadastro():
+   
     data = request.json
     cadastro_dto = CadastroDTO(
         nickname=data['nickname'],
@@ -29,6 +31,7 @@ def create_cadastro():
 
 @app.route('/cadastros/<nickname>', methods=['PUT'])
 def update_cadastro(nickname):
+    
     data = request.json
     cadastro_dto = CadastroDTO(
         nickname=nickname,
@@ -45,5 +48,6 @@ def update_cadastro(nickname):
 
 @app.route('/cadastros/<nickname>', methods=['DELETE'])
 def delete_cadastro(nickname):
+   
     cadastro_service.delete_cadastro(nickname)
     return jsonify({"message": "Cadastro deleted successfully"}), 200

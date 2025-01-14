@@ -25,3 +25,16 @@ class Cadastro(Base):
         self.street = street
         self.number = number
         self.zip_code = zip_code
+    def to_dict(self):
+        
+        return {
+            "id": self.id,
+            "nickname": self.nickname,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+            "birth_date": self.birth_date.strftime('%Y-%m-%d') if self.birth_date else None,  # Formata a data
+            "street": self.street,
+            "number": self.number,
+            "zip_code": self.zip_code
+        }
