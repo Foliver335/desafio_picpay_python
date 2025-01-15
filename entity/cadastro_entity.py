@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date
-from sqlalchemy.ext.declarative import declarative_base
+from utils.common_imports import *  
 
 Base = declarative_base()
 

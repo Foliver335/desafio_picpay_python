@@ -1,49 +1,35 @@
-import re
-from datetime import datetime
+from utils.common_imports import *  
 
 class CadastroValidations:
     @staticmethod
-    def validate_field(field, field_name):
-        
-        if field is None or str(field).strip() == "":
-            raise ValueError(f"O campo '{field_name}' é obrigatório e não pode estar vazio ou em branco.")
+    def validate_alphanumeric(value, field_name):
+        if not value or not value.isalnum():
+            raise ValueError(f"O campo '{field_name}' deve conter apenas caracteres alfanuméricos.")
 
     @staticmethod
-    def validate_alphanumeric(field, field_name):
-       
-        CadastroValidations.validate_field(field, field_name)
-        if not re.fullmatch(r'^[a-zA-Z0-9]+$', field):
-            raise ValueError(f"O campo '{field_name}' deve conter apenas caracteres alfanuméricos (letras e números).")
+    def validate_letters_only(value, field_name):
+        if not value or not value.isalpha():
+            raise ValueError(f"O campo '{field_name}' deve conter apenas letras.")
 
     @staticmethod
-    def validate_letters_only(field, field_name):
-        
-        CadastroValidations.validate_field(field, field_name)
-        if not re.fullmatch(r'^[A-Za-zÀ-ÿ\s]+$', field):
-            raise ValueError(f"O campo '{field_name}' deve conter apenas letras (sem números ou caracteres especiais).")
+    def validate_email(value):
+        import re
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
+            raise ValueError("O campo 'email' é inválido.")
 
     @staticmethod
-    def validate_email(field):
-        
-        CadastroValidations.validate_field(field, "email")
-        if not re.fullmatch(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', field):
-            raise ValueError("O campo 'email' deve ser um endereço de e-mail válido.")
-
-    @staticmethod
-    def validate_numbers_only(field, field_name):
-        
-        CadastroValidations.validate_field(field, field_name)
-        if not re.fullmatch(r'^\d+$', field):
+    def validate_numbers_only(value, field_name):
+        if not value.isdigit():
             raise ValueError(f"O campo '{field_name}' deve conter apenas números.")
 
-    @staticmethod
-    def validate_date_format(field):
-       
-        CadastroValidations.validate_field(field, "birth_date")
+    
+    def validate_date_format(value, field_name="birth_date"):
+        from datetime import datetime
         try:
-            datetime.strptime(field, '%Y-%m-%d')
+            datetime.strptime(value, "%Y-%m-%d")
         except ValueError:
-            raise ValueError("O campo 'birth_date' deve estar no formato YYYY-MM-DD.")
+            raise ValueError(f"O campo '{field_name}' deve estar no formato YYYY-MM-DD.")
+
 
     @staticmethod
     def validate_address(address):
