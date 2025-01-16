@@ -34,7 +34,6 @@ class CadastroService:
         return cadastro
 
     def update_cadastro(self, old_nickname, cadastro_dto):
-        # Buscar o cadastro existente pelo nickname antigo
         cadastro = self.repository.find_by_nickname(old_nickname)
         if not cadastro:
             raise ValueError("Cadastro não encontrado.")
@@ -45,7 +44,6 @@ class CadastroService:
             if existing_cadastro:
                 raise ValueError("O nickname já está em uso por outro cadastro.")
 
-        # Atualizar os campos do cadastro
         fields_to_update = {
             "nickname": cadastro_dto.nickname if cadastro_dto.nickname else old_nickname,
             "name": cadastro_dto.name,
