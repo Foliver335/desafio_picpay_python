@@ -12,10 +12,11 @@ class CadastroValidations:
             raise ValueError(f"O campo '{field_name}' deve conter apenas letras.")
 
     @staticmethod
-    def validate_email(value):
+    def validate_email(value, field_name):
         import re
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
-            raise ValueError("O campo 'email' é inválido.")
+        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        if not re.match(email_regex, value):
+            raise ValueError(f"O campo '{field_name}' deve conter um e-mail válido.")
 
     @staticmethod
     def validate_numbers_only(value, field_name):

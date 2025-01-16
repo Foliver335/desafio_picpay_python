@@ -14,7 +14,7 @@ class CadastroRepository:
         return self.session.query(Cadastro).all()
 
     def find_by_nickname(self, nickname):
-       
+        
         return self.session.query(Cadastro).filter_by(nickname=nickname).first()
 
     def update(self, cadastro):

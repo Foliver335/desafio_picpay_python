@@ -33,13 +33,21 @@ class CadastroService:
             raise ValueError("Cadastro não encontrado.")
         return cadastro
 
-    def update_cadastro(self, nickname, cadastro_dto):
-        
-        cadastro = self.repository.find_by_nickname(nickname)
+    def update_cadastro(self, old_nickname, cadastro_dto):
+        # Buscar o cadastro existente pelo nickname antigo
+        cadastro = self.repository.find_by_nickname(old_nickname)
         if not cadastro:
             raise ValueError("Cadastro não encontrado.")
 
+        if cadastro_dto.nickname and cadastro_dto.nickname != old_nickname:
+            existing_cadastro = self.repository.find_by_nickname(cadastro_dto.nickname)
+            print(f"Encontrado: {existing_cadastro}")
+            if existing_cadastro:
+                raise ValueError("O nickname já está em uso por outro cadastro.")
+
+        # Atualizar os campos do cadastro
         fields_to_update = {
+            "nickname": cadastro_dto.nickname if cadastro_dto.nickname else old_nickname,
             "name": cadastro_dto.name,
             "email": cadastro_dto.email,
             "phone": cadastro_dto.phone,
@@ -48,10 +56,12 @@ class CadastroService:
             "number": cadastro_dto.number,
             "zip_code": cadastro_dto.zip_code,
         }
+        
 
         for attr, value in fields_to_update.items():
             if value is not None:
                 setattr(cadastro, attr, value)
+            
 
         self.repository.update(cadastro)
 

@@ -22,6 +22,7 @@ from entity.cadastro_entity import Cadastro
 from repository.cadastro_repository import CadastroRepository
 from service.cadastro_service import CadastroService
 from utils.cadastro_validations import CadastroValidations
-from config.database_config import engine, Base
 from controller.cadastro_controller import app
+from config.database_config import engine, Base
+
 
